@@ -1,0 +1,17 @@
+.danger {
+  background-color: rgb(240, 118, 118);
+}
+.warning {
+  background-color:rgb(245, 182, 105);
+}
+.okay {
+  background-color:rgb(16,128,67);
+}
+.btn-okay{
+  background-color:rgb(16,128,67);
+  color: white;
+}
+.completed {
+  color: slategray;
+  text-decoration: line-through;
+}

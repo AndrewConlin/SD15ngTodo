@@ -1,0 +1,74 @@
+<!-- <h1><img class="logo" src="https://www.logolynx.com/images/logolynx/0c/0cf9220ee3942affe1e720cd9527a4f0.png" /> ngTodo <span [ngClass]="incompleteTodoWarning()" class="badge badge-primary">{{getNumTodos()}}</span></h1> -->
+<h1>Incomplete ToDO's  <span [ngClass]="incompleteTodoWarning()" class="badge badge-primary">{{getNumTodos()}}</span></h1>
+
+<!-- create todo form -->
+<div  *ngIf="!selected">
+  <form #createTodoForm ="ngForm">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="task" placeholder="Enter a new task" name="task" [(ngModel)]="newTodo.task">
+        <div class="input-group-append">
+           <button class="btn btn-okay" (click)="addTodo(newTodo, createTodoForm);">Add Todo</button>
+        </div>
+    </div>
+  </form>
+</div>
+
+<!-- show all todos -->
+<div *ngIf="!selected">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Mark</th>
+        <th>Completed</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let todo of todos | incomplete:showComplete" [ngClass]="todo.completed ? 'completed' : ''">
+        <td (click)="displayTodo(todo)">{{todo.task}}</td>
+        <td><input type="checkbox" [(ngModel)] = "todo.completed" (change)="updateTodoCompleted(todo)"></td>
+        <td>{{todo.completed}}</td>
+        <td><button class="btn btn-danger" (click)="deleteTodo(todo.id)">X</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<span><i>Show Completed Todos: </i><input type="checkbox" [(ngModel)]="showComplete"/></span>
+
+<!-- display one todo -->
+<div *ngIf="selected && !editTodo" class="card">
+    <div class="card-header">
+        <h3>Details: </h3>
+    </div>
+    <div class="card-body">
+        <p class="card-text"><b>ID:</b> {{selected.id}}</p>
+        <p class="card-text"><b>Task:</b> {{selected.task}}</p>
+        <p class="card-text"><b>Desc:</b> {{selected.description}}</p>
+        <p class="card-text"><b>Completed:</b> {{selected.completed}}</p>
+
+        <button class="btn btn-info" (click)="setEditTodo()">Edit</button>
+        <button class="btn btn-info" (click)="displayTable()">Back</button>
+    </div>
+</div>
+
+<!-- edit todo form -->
+<div *ngIf="editTodo">
+  <form>
+    <div class="form-group">
+      <label for="editTask">Task</label>
+      <input type="text" id="editTask" class="form-control" name="task" [(ngModel)]="editTodo.task"/>
+    </div>
+    <div class="form-group">
+      <label for="editDesc">Description</label>
+      <input type="text" id="editDesc" class="form-control" name="description" [(ngModel)]="editTodo.description"/>
+    </div>
+    <div class="form-group">
+      <label for="editComp">Completed</label>
+      <input type="checkbox"  id="editComp" class="form-control" name="completed" [(ngModel)]="editTodo.completed"/>
+    </div>
+
+    <button class="btn btn-success" (click)="updateTodo(editTodo)">Save</button>
+    <button class="btn btn-warning" (click)="editTodo = null;">Cancel</button>
+  </form>
+</div>
